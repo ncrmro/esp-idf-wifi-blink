@@ -22,3 +22,5 @@
   * [esptool](https://github.com/espressif/esptool)
   * [pyserial](https://github.com/pyserial/pyserial)
 
+## Thanks
+Original Wifi Manager source [here](https://github.com/tonyp7/esp32-wifi-manager)
