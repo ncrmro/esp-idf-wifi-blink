@@ -16,3 +16,9 @@
 * [ ] Button trigger
 * [ ] Reset
  
+## Development Tools
+* [platformio cli](https://docs.platformio.org/en/latest/core/installation.html#python-package-manager) 
+* python packages
+  * [esptool](https://github.com/espressif/esptool)
+  * [pyserial](https://github.com/pyserial/pyserial)
+
