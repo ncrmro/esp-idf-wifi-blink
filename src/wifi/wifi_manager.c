@@ -684,14 +684,16 @@ void wifi_manager( void * pvParameters ){
 		.ap = {
 			.ssid_len = 0,
 			.channel = wifi_settings.ap_channel,
-			.authmode = WIFI_AUTH_WPA2_PSK,
+			// edited by ncrmro: https://github.com/tonyp7/esp32-wifi-manager/issues/46#issuecomment-538901928
+			.authmode = DEFAULT_AP_AUTHMODE,
 			.ssid_hidden = wifi_settings.ap_ssid_hidden,
 			.max_connection = DEFAULT_AP_MAX_CONNECTIONS,
 			.beacon_interval = DEFAULT_AP_BEACON_INTERVAL,
 		},
 	};
 	memcpy(ap_config.ap.ssid, wifi_settings.ap_ssid , sizeof(wifi_settings.ap_ssid));
-	memcpy(ap_config.ap.password, wifi_settings.ap_pwd, sizeof(wifi_settings.ap_pwd));
+    // edited by ncrmro: https://github.com/tonyp7/esp32-wifi-manager/issues/46#issuecomment-538901928
+	//	memcpy(ap_config.ap.password, wifi_settings.ap_pwd, sizeof(wifi_settings.ap_pwd));
 
 	ESP_ERROR_CHECK(tcpip_adapter_dhcps_stop(TCPIP_ADAPTER_IF_AP)); 	/* stop AP DHCP server */
 	inet_pton(AF_INET, DEFAULT_AP_IP, &info.ip); /* access point is on a static IP */
@@ -701,7 +703,7 @@ void wifi_manager( void * pvParameters ){
 	ESP_ERROR_CHECK(tcpip_adapter_dhcps_start(TCPIP_ADAPTER_IF_AP)); /* start AP DHCP server */
 
 	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
-//	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &ap_config));
+	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &ap_config));
 	ESP_ERROR_CHECK(esp_wifi_set_bandwidth(WIFI_IF_AP, wifi_settings.ap_bandwidth));
 	ESP_ERROR_CHECK(esp_wifi_set_ps(wifi_settings.sta_power_save));
 

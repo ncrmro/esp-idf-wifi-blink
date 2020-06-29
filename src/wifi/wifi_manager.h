@@ -85,6 +85,9 @@ extern "C" {
  */
 #define AP_AUTHMODE 						WIFI_AUTH_WPA2_PSK
 
+// edited by ncrmro: https://github.com/tonyp7/esp32-wifi-manager/issues/46#issuecomment-538901928
+#define DEFAULT_AP_AUTHMODE 						CONFIG_AP_AUTHMODE
+
 /** @brief Defines visibility of the access point. 0: visible AP. 1: hidden */
 #define DEFAULT_AP_SSID_HIDDEN 				0
 
