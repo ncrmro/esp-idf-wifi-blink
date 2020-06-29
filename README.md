@@ -1,6 +1,6 @@
 
 1. Board is powered on.
-1. Attempt to Reconnect to Existing wifi
+1. In Station mode, try to connect to access point with credentials in flash.
 1. If not start Access Point.
 1. User connects to access point.
 1. Captive portal is opened
@@ -10,7 +10,7 @@
 1. User should be able to reset device
 
 # TODO
-* [ ] ESP32 Wifi Manager with Captive Portal
+* [x] ESP32 Wifi Manager with Captive Portal
 * [ ] Shutdown Access Point after creds are found
 * [ ] Portal Redirect
 * [ ] Button trigger
