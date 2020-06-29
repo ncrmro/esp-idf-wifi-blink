@@ -22,5 +22,7 @@
   * [esptool](https://github.com/espressif/esptool)
   * [pyserial](https://github.com/pyserial/pyserial)
 
+esptool.py -p /dev/cu.SLAB_USBtoUART erase_flash
+
 ## Thanks
 Original Wifi Manager source [here](https://github.com/tonyp7/esp32-wifi-manager)
