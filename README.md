@@ -10,10 +10,11 @@ than Arduino. [Platformio](https://platformio.org/) is utilized primarily as a b
 1. User connects to access point.
 1. Captive portal is opened
 1. Wifi is selected and credentials are added
-    1. Wifi now in WIFI_MODE_APSTA with LAN IP
-    1. User should be redirected to browser from Cap Portal
+    1. Wifi now in WIFI_MODE_APSTA with LAN IP, Client make a post request to `status.json`
+    1. User should be redirected to browser from Cap Portal to actual we browser
     1. One we get to web app we say `a little more config needed`
-    1. Switch to WIFI_MODE_STA and change some variable the client posts to
+    1. Switch to WIFI_MODE_STA, Client 
+    1. Client Device should revert back
     1. Hardware should be fully initialized at this point for end use.
 1. Browser should show button to trigger onboard LED (this could also be shown in access point mode)
 1. User should be able to reset device

@@ -50,7 +50,7 @@ Contains the freeRTOS task and all necessary support
 #include "lwip/ip4_addr.h"
 
 #include "json.h"
-#include "http_server.h"
+#include "../http_server/http_server.h"
 #include "wifi_manager.h"
 #include "dns_server.h"
 

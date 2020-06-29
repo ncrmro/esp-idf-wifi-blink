@@ -55,7 +55,7 @@ function to process requests, decode URLs, serve files, etc. etc.
 #include "lwip/priv/tcpip_priv.h"
 
 #include "http_server.h"
-#include "wifi_manager.h"
+#include "../wifi/wifi_manager.h"
 
 
 /* @brief tag used for ESP serial console messages */

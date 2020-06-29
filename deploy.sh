@@ -4,6 +4,8 @@ esptool=/home/ncrmro/.local/bin/esptool.py
 PORT="/dev/ttyUSB0"
 BAUD=115200
 
+rm -rf .pio
+
 echo "Clearing flash"
 
 $esptool -p $PORT --baud $BAUD erase_flash

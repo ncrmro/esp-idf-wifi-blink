@@ -283,6 +283,9 @@ function checkStatus(){
 					$( "#loading" ).hide();
 					$( "#connect-success" ).show();
 					$( "#connect-fail" ).hide();
+
+                    var link = document.getElementById("outbound_a_href_on_success");
+                    link.setAttribute('href', "http://" + data['ip']);
 				}
 				else if(data["urc"] === 1){
 					//failed attempt
@@ -313,6 +316,10 @@ function checkStatus(){
 					$("#netmask").text(data["netmask"]);
 					$("#gw").text(data["gw"]);
 					$("#wifi-status").slideDown( "fast", function() {});
+
+                    var link = document.getElementById("outbound_a_href");
+                    link.setAttribute('href', "http://" + data['ip']);
+
 				}
 			}
 		}
