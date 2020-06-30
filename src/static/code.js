@@ -1,11 +1,11 @@
 // save some bytes
 const gel = (e) => document.getElementById(e);
 
-const wifi = gel("wifi");
-const connect = gel("connect");
-const connect_manual = gel("connect_manual");
-const connect_wait = gel("connect-wait");
-const connect_details = gel("connect-details");
+const wifi_div = gel("wifi");
+const connect_div = gel("connect");
+const connect_manual_div = gel("connect_manual");
+const connect_wait_div = gel("connect-wait");
+const connect_details_div = gel("connect-details");
 
 function docReady(fn) {
   // see if DOM is already available
@@ -50,7 +50,7 @@ docReady(async function () {
   gel("wifi-status").addEventListener(
     "click",
     () => {
-      gel("wifi").style.display = "none";
+      wifi_div.style.display = "none";
       document.getElementById("connect-details").style.display = "block";
     },
     false
@@ -62,9 +62,9 @@ docReady(async function () {
       selectedSSID = e.target.innerText;
 
       gel("ssid-pwd").textContent = selectedSSID;
-      gel("wifi").style.display = "none";
-      gel("connect_manual").style.display = "block";
-      gel("connect").style.display = "none";
+      wifi_div.style.display = "none";
+      connect_manual_div.style.display = "block";
+      connect_div.style.display = "none";
 
       gel("connect-success").display = "none";
       gel("connect-fail").display = "none";
@@ -77,8 +77,8 @@ docReady(async function () {
     (e) => {
       selectedSSID = e.target.innerText;
       gel("ssid-pwd").textContent = selectedSSID;
-      gel("connect").style.display = "block";
-      gel("wifi").style.display = "none";
+      connect_div.style.display = "block";
+      wifi_div.style.display = "none";
       // init_cancel();
     },
     false
@@ -86,9 +86,9 @@ docReady(async function () {
 
   function cancel() {
     selectedSSID = "";
-    connect.style.display = "none";
-    connect_manual.style.display = "none";
-    wifi.style.display = "block";
+    connect_div.style.display = "none";
+    connect_manual_div.style.display = "none";
+    wifi_div.style.display = "block";
   }
 
   gel("cancel").addEventListener("click", cancel, false);
@@ -108,8 +108,8 @@ docReady(async function () {
   gel("ok-details").addEventListener(
     "click",
     () => {
-      gel("connect-details").style.display = "none";
-      gel("wifi").style.display = "block";
+      connect_details_div.style.display = "none";
+      wifi_div.style.display = "block";
     },
     false
   );
@@ -136,8 +136,8 @@ docReady(async function () {
   gel("ok-connect").addEventListener(
     "click",
     () => {
-      connect_wait.style.display = "none";
-      gel("wifi").style.display = "block";
+      connect_wait_div.style.display = "none";
+      wifi_div.style.display = "block";
     },
     false
   );
@@ -167,7 +167,7 @@ docReady(async function () {
     document.getElementById("diag-disconnect").style.display = "none";
     gel("connect-details-wrap").removeClass("blur");
 
-    await fetch("/connect.json", {
+    await fetch("/connect_div.json", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -177,8 +177,8 @@ docReady(async function () {
 
     startCheckStatusInterval();
 
-    connect_details.style.display = "none";
-    wifi.style.display = "block";
+    connect_details_div.style.display = "none";
+    wifi_div.style.display = "block";
   });
 
   //first time the page loads: attempt get the connection status and start the wifi scan
@@ -211,11 +211,11 @@ async function performConnect(conntype) {
 
   gel("ok-connect").disabled = true;
   gel("ssid-wait").textContent = selectedSSID;
-  connect.style.display = "none";
-  connect_manual.style.display = "none";
-  gel("connect-wait").style.display = "block";
+  connect_div.style.display = "none";
+  connect_manual_div.style.display = "none";
+  connect_wait_div.style.display = "block";
 
-  await fetch("/connect.json", {
+  await fetch("/connect_div.json", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
