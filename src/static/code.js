@@ -20,7 +20,6 @@ function docReady(fn) {
   }
 }
 
-var apList = null;
 var selectedSSID = "";
 var refreshAPInterval = null;
 var checkStatusInterval = null;
@@ -50,7 +49,7 @@ function startRefreshAPInterval() {
 docReady(async function () {
   gel("wifi-status").addEventListener(
     "click",
-    (e) => {
+    () => {
       gel("wifi").style.display = "none";
       document.getElementById("connect-details").style.display = "block";
     },
@@ -85,7 +84,7 @@ docReady(async function () {
     false
   );
 
-  function cancel(e) {
+  function cancel() {
     selectedSSID = "";
     connect.style.display = "none";
     connect_manual.style.display = "none";
@@ -101,14 +100,14 @@ docReady(async function () {
   gel("manual_join").addEventListener(
     "click",
     (e) => {
-      performConnect($(this).data("connect"));
+      performConnect(e.data("connect"));
     },
     false
   );
 
   gel("ok-details").addEventListener(
     "click",
-    (e) => {
+    () => {
       gel("connect-details").style.display = "none";
       gel("wifi").style.display = "block";
     },
@@ -117,7 +116,7 @@ docReady(async function () {
 
   gel("ok-credits").addEventListener(
     "click",
-    (e) => {
+    () => {
       gel("credits").style.display = "none";
       gel("app").style.display = "block";
     },
@@ -126,7 +125,7 @@ docReady(async function () {
 
   gel("acredits").addEventListener(
     "click",
-    (e) => {
+    () => {
       event.preventDefault();
       gel("app").style.display = "none";
       gel("credits").style.display = "block";
@@ -136,8 +135,8 @@ docReady(async function () {
 
   gel("ok-connect").addEventListener(
     "click",
-    (e) => {
-      gel("connect-wait").style.display = "none";
+    () => {
+      connect_wait.style.display = "none";
       gel("wifi").style.display = "block";
     },
     false
@@ -145,7 +144,7 @@ docReady(async function () {
 
   gel("disconnect").addEventListener(
     "click",
-    (e) => {
+    () => {
       gel("connect-details-wrap").addClass("blur");
       gel("diag-disconnect").style.display = "block";
     },
@@ -154,21 +153,21 @@ docReady(async function () {
 
   gel("no-disconnect").addEventListener(
     "click",
-    (e) => {
+    () => {
       gel("diag-disconnect").style.display = "none";
       gel("connect-details-wrap").removeClass("blur");
     },
     false
   );
 
-  gel("yes-disconnect").addEventListener("click", async function (e) {
+  gel("yes-disconnect").addEventListener("click", async () => {
     stopCheckStatusInterval();
     selectedSSID = "";
 
     document.getElementById("diag-disconnect").style.display = "none";
     gel("connect-details-wrap").removeClass("blur");
 
-    const response = await fetch("/connect.json", {
+    await fetch("/connect.json", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -216,7 +215,7 @@ async function performConnect(conntype) {
   connect_manual.style.display = "none";
   gel("connect-wait").style.display = "block";
 
-  const response = await fetch("/connect.json", {
+  await fetch("/connect.json", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
