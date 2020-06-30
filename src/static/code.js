@@ -330,13 +330,15 @@ async function checkStatus(url = "/status.json") {
           gel("connect-success").style.display = "block";
           gel("connect-fail").style.display = "none";
 
-          var link = gel("outbound_a_href_on_success");
-          link.setAttribute("href", "http://" + data["ip"]);
+//           var link = gel("outbound_a_href_on_success");
+//           link.setAttribute("href", "http://" + data["ip"]);
 
         } else if (data["urc"] === 1) {
           //failed attempt
-          gel("connected-to span").textContent = "";
-          gel("connect-details h1").textContent = "";
+          document.querySelector("#connected-to div div div span").textContent =
+                      data["ssid"];
+        document.querySelector("#connect-details h1").textContent =
+          data["ssid"];;
           gel("ip").textContent = "0.0.0.0";
           gel("netmask").textContent = "0.0.0.0";
           gel("gw").textContent = "0.0.0.0";
@@ -349,12 +351,13 @@ async function checkStatus(url = "/status.json") {
 
           //update wait screen
           gel("loading").display = "none";
-          gel("connect-fail").show();
-          gel("connect-success").display = "none";
+          gel("connect-fail").style.display = "block"
+          gel("connect-success").style.display = "none";
         }
       } else if (data.hasOwnProperty("urc") && data["urc"] === 0) {
+        console.log("Connected!");
         //ESP32 is already connected to a wifi without having the user do anything
-        if (!gel("wifi-status").style.display == block) {
+        if (gel("wifi-status").style.display == "" || gel("wifi-status").style.display == "none") {
           document.querySelector("#connected-to div div div span").textContent =
             data["ssid"];
           document.querySelector("#connect-details h1").textContent =
@@ -364,8 +367,8 @@ async function checkStatus(url = "/status.json") {
           gel("gw").textContent = data["gw"];
           gel("wifi-status").style.display = "block";
 
-          var link = gel("outbound_a_href");
-          link.setAttribute("href", "http://" + data["ip"]);
+//           var link = gel("outbound_a_href");
+//           link.setAttribute("href", "http://" + data["ip"]);
         }
       }
     } else if (data.hasOwnProperty("urc") && data["urc"] === 2) {

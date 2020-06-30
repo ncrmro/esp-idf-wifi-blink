@@ -4,6 +4,8 @@ BAUD=115200
 
 esptool.py -p $PORT --baud $BAUD erase_flash
 
+sh min.sh
+
 pio run --target upload --upload-port $PORT || exit 1
 
 python -m serial.tools.miniterm $PORT $BAUD

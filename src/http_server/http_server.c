@@ -71,11 +71,11 @@ static TaskHandle_t task_http_server = NULL;
  * @see https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#embedding-binary-data
  */
 // edited by ncrmro, expects a folder in your src folder called static to contain these files.
-extern const uint8_t style_css_start[] asm("_binary_src_static_style_css_start");
-extern const uint8_t style_css_end[]   asm("_binary_src_static_style_css_end");
+extern const uint8_t style_css_start[] asm("_binary_src_static_style_min_css_gz_start");
+extern const uint8_t style_css_end[]   asm("_binary_src_static_style_min_css_gz_end");
 
-extern const uint8_t code_js_start[] asm("_binary_src_static_code_js_start");
-extern const uint8_t code_js_end[] asm("_binary_src_static_code_js_end");
+extern const uint8_t code_js_start[] asm("_binary_src_static_code_min_js_gz_start");
+extern const uint8_t code_js_end[] asm("_binary_src_static_code_min_js_gz_end");
 extern const uint8_t index_html_start[] asm("_binary_src_static_index_html_start");
 extern const uint8_t index_html_end[] asm("_binary_src_static_index_html_end");
 extern const uint8_t success_html_start[] asm("_binary_src_static_success_html_start");
@@ -84,8 +84,8 @@ extern const uint8_t success_html_end[] asm("_binary_src_static_success_html_end
 
 /* const http headers stored in ROM */
 const static char http_html_hdr[] = "HTTP/1.1 200 OK\nContent-type: text/html\n\n";
-const static char http_css_hdr[] = "HTTP/1.1 200 OK\nContent-type: text/css\nCache-Control: public, max-age=31536000\n\n";
-const static char http_js_hdr[] = "HTTP/1.1 200 OK\nContent-type: text/javascript\n\n";
+const static char http_css_hdr[] = "HTTP/1.1 200 OK\nContent-type: text/css\nCache-Control: public, max-age=31536000\nContent-Encoding: gzip\n\n";
+const static char http_js_hdr[] = "HTTP/1.1 200 OK\nContent-type: text/javascript\nContent-Encoding: gzip\n\n";
 const static char http_400_hdr[] = "HTTP/1.1 400 Bad Request\nContent-Length: 0\n\n";
 const static char http_404_hdr[] = "HTTP/1.1 404 Not Found\nContent-Length: 0\n\n";
 const static char http_503_hdr[] = "HTTP/1.1 503 Service Unavailable\nContent-Length: 0\n\n";
