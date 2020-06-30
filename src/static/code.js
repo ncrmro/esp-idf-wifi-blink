@@ -52,10 +52,9 @@ docReady(function () {
   document.getElementById("wifi-status").addEventListener(
     "click",
     function (e) {
-      document.getElementById("wifi").slideUp("fast", function () {});
+      document.getElementById("wifi").style.display = "none";
       document
-        .getElementById("connect-details")
-        .slideDown("fast", function () {});
+        .getElementById("connect-details").style.display = "block";
     },
     false
   );
@@ -63,16 +62,13 @@ docReady(function () {
   document.getElementById("manual_add").addEventListener(
     "click",
     function (e) {
-      selectedSSID = $(this).text();
-      document.getElementById("ssid-pwd").text(selectedSSID);
-      document.getElementById("wifi").slideUp("fast", function () {});
-      document
-        .getElementById("connect_manual")
-        .slideDown("fast", function () {});
-      document.getElementById("connect").slideUp("fast", function () {});
+      selectedSSID = e.target.innerText;
 
-      //update wait screen
-      document.getElementById("loading").show();
+      document.getElementById("ssid-pwd").textContent = selectedSSID
+      document.getElementById("wifi").style.display="none";
+      document.getElementById("connect_manual").style.display="block";
+      document.getElementById("connect").style.display="none";
+
       document.getElementById("connect-success").display = "none";
       document.getElementById("connect-fail").display = "none";
     },
@@ -82,143 +78,134 @@ docReady(function () {
   document.getElementById("wifi-list").addEventListener(
     "click",
     function (e) {
-      selectedSSID = $(this).text();
-      document.getElementById("ssid-pwd").text(selectedSSID);
-      document.getElementById("wifi").slideUp("fast", function () {});
-      document.getElementById("connect_manual").slideUp("fast", function () {});
-      document.getElementById("connect").slideDown("fast", function () {});
-
-      //update wait screen
-      document.getElementById("loading").show();
-      document.getElementById("connect-success").display = "none";
-      document.getElementById("connect-fail").display = "none";
+      selectedSSID = e.target.innerText;
+      console.log('selected', selectedSSID)
+      document.getElementById("ssid-pwd").textContent = selectedSSID
+      document.getElementById("connect").style.display = "block";
+      document.getElementById("wifi").style.display = "none";
+      // init_cancel();
     },
     false
   );
 
-  // document.getElementById("#cancel").addEventListener(
-  //   "click",
-  //   function (e) {
-  //     selectedSSID = "";
-  //     document.getElementById("connect").slideUp("fast", function () {});
-  //     document.getElementById("connect_manual").slideUp("fast", function () {});
-  //     document.getElementById("wifi").slideDown("fast", function () {});
-  //   },
-  //   false
-  // );
-  //
-  // document.getElementById("#manual_cancel").addEventListener(
-  //   "click",
-  //   function (e) {
-  //     selectedSSID = "";
-  //     document.getElementById("connect").slideUp("fast", function () {});
-  //     document.getElementById("connect_manual").slideUp("fast", function () {});
-  //     document.getElementById("wifi").slideDown("fast", function () {});
-  //   },
-  //   false
-  // );
-  //
-  // document.getElementById("#join").addEventListener(
-  //   "click",
-  //   function (e) {
-  //     performConnect();
-  //   },
-  //   false
-  // );
-  //
-  // $().on("click", function () {});
-  //
-  // document.getElementById("#manual_join").addEventListener(
-  //   "click",
-  //   function (e) {
-  //     performConnect($(this).data("connect"));
-  //   },
-  //   false
-  // );
-  //
-  // document.getElementById("#ok-details").addEventListener(
-  //   "click",
-  //   function (e) {
-  //     document.getElementById("connect-details").slideUp("fast", function () {});
-  //     document.getElementById("wifi").slideDown("fast", function () {});
-  //   },
-  //   false
-  // );
-  //
-  // document.getElementById("#ok-credits").addEventListener(
-  //   "click",
-  //   function (e) {
-  //     document.getElementById("credits").slideUp("fast", function () {});
-  //     document.getElementById("app").slideDown("fast", function () {});
-  //   },
-  //   false
-  // );
-  //
-  // document.getElementById("#acredits").addEventListener(
-  //   "click",
-  //   function (e) {
-  //     event.preventDefault();
-  //     document.getElementById("app").slideUp("fast", function () {});
-  //     document.getElementById("credits").slideDown("fast", function () {});
-  //   },
-  //   false
-  // );
-  //
-  // document.getElementById("#ok-connect").addEventListener(
-  //   "click",
-  //   function (e) {
-  //     document.getElementById("connect-wait").slideUp("fast", function () {});
-  //     document.getElementById("wifi").slideDown("fast", function () {});
-  //   },
-  //   false
-  // );
-  //
-  // document.getElementById("#disconnect").addEventListener(
-  //   "click",
-  //   function (e) {
-  //     document.getElementById("connect-details-wrap").addClass("blur");
-  //     document.getElementById("diag-disconnect").slideDown("fast", function () {});
-  //   },
-  //   false
-  // );
-  //
-  // document.getElementById("#no-disconnect").addEventListener(
-  //   "click",
-  //   function (e) {
-  //     document.getElementById("diag-disconnect").slideUp("fast", function () {});
-  //     document.getElementById("connect-details-wrap").removeClass("blur");
-  //   },
-  //   false
-  // );
-  //
-  // document.getElementById("#yes-disconnect").addEventListener(
-  //   "click",
-  //   function (e) {
-  //     stopCheckStatusInterval();
-  //     selectedSSID = "";
-  //
-  //     document
-  //       .getElementById("diag-disconnect")
-  //       .slideUp("fast", function () {});
-  //     document.getElementById("connect-details-wrap").removeClass("blur");
-  //
-  //     $.ajax({
-  //       url: "/connect.json",
-  //       dataType: "json",
-  //       method: "DELETE",
-  //       cache: false,
-  //       data: { timestamp: Date.now() },
-  //     });
-  //
-  //     startCheckStatusInterval();
-  //
-  //     document
-  //       .getElementById("connect-details")
-  //       .slideUp("fast", function () {});
-  //     document.getElementById("wifi").slideDown("fast", function () {});
-  //   },
-  //   false
-  // );
+  function cancel (e) {
+    selectedSSID = "";
+    document.getElementById("connect").style.display = "none";
+    document.getElementById("connect_manual").style.display = "none";
+    document.getElementById("wifi").style.display = "block";
+  }
+
+  document.getElementById("cancel").addEventListener(
+    "click", cancel,
+    false
+  );
+
+  document.getElementById("manual_cancel").addEventListener(
+    "click", cancel,
+    false
+  );
+
+  document.getElementById("join").addEventListener(
+    "click",
+    function (e) {
+      performConnect();
+    },
+    false
+  );
+
+  $().on("click", function () {});
+
+  document.getElementById("manual_join").addEventListener(
+    "click",
+    function (e) {
+      performConnect($(this).data("connect"));
+    },
+    false
+  );
+
+  document.getElementById("ok-details").addEventListener(
+    "click",
+    function (e) {
+      document.getElementById("connect-details").slideUp("fast", function () {});
+      document.getElementById("wifi").slideDown("fast", function () {});
+    },
+    false
+  );
+
+  document.getElementById("ok-credits").addEventListener(
+    "click",
+    function (e) {
+      document.getElementById("credits").slideUp("fast", function () {});
+      document.getElementById("app").slideDown("fast", function () {});
+    },
+    false
+  );
+
+  document.getElementById("acredits").addEventListener(
+    "click",
+    function (e) {
+      event.preventDefault();
+      document.getElementById("app").slideUp("fast", function () {});
+      document.getElementById("credits").slideDown("fast", function () {});
+    },
+    false
+  );
+
+  document.getElementById("ok-connect").addEventListener(
+    "click",
+    function (e) {
+      document.getElementById("connect-wait").slideUp("fast", function () {});
+      document.getElementById("wifi").slideDown("fast", function () {});
+    },
+    false
+  );
+
+  document.getElementById("disconnect").addEventListener(
+    "click",
+    function (e) {
+      document.getElementById("connect-details-wrap").addClass("blur");
+      document.getElementById("diag-disconnect").slideDown("fast", function () {});
+    },
+    false
+  );
+
+  document.getElementById("no-disconnect").addEventListener(
+    "click",
+    function (e) {
+      document.getElementById("diag-disconnect").slideUp("fast", function () {});
+      document.getElementById("connect-details-wrap").removeClass("blur");
+    },
+    false
+  );
+
+  document.getElementById("yes-disconnect").addEventListener(
+    "click",
+    function (e) {
+      stopCheckStatusInterval();
+      selectedSSID = "";
+
+      document
+        .getElementById("diag-disconnect")
+        .slideUp("fast", function () {});
+      document.getElementById("connect-details-wrap").removeClass("blur");
+
+      $.ajax({
+        url: "/connect.json",
+        dataType: "json",
+        method: "DELETE",
+        cache: false,
+        data: { timestamp: Date.now() },
+      });
+
+      startCheckStatusInterval();
+
+      document
+        .getElementById("connect-details")
+        .slideUp("fast", function () {});
+      document.getElementById("wifi").slideDown("fast", function () {});
+    },
+    false
+  );
 
   //first time the page loads: attempt get the connection status and start the wifi scan
   refreshAP();
@@ -238,21 +225,21 @@ function performConnect(conntype) {
   var pwd;
   if (conntype == "manual") {
     //Grab the manual SSID and PWD
-    selectedSSID = document.getElementById("manual_ssid").val();
-    pwd = document.getElementById("manual_pwd").val();
+    selectedSSID = document.getElementById("manual_ssid").value;
+    pwd = document.getElementById("manual_pwd").value;
   } else {
-    pwd = document.getElementById("pwd").val();
+    pwd = document.getElementById("pwd").value;
   }
   //reset connection
-  document.getElementById("loading").show();
-  document.getElementById("connect-success").display = "none";
-  document.getElementById("connect-fail").display = "none";
+  document.getElementById("loading").style.display= "block";
+  document.getElementById("connect-success").style.display = "none";
+  document.getElementById("connect-fail").style.display = "none";
 
-  document.getElementById("ok-connect").prop("disabled", true);
-  document.getElementById("ssid-wait").text(selectedSSID);
-  document.getElementById("connect").slideUp("fast", function () {});
-  document.getElementById("connect_manual").slideUp("fast", function () {});
-  document.getElementById("connect-wait").slideDown("fast", function () {});
+  document.getElementById("ok-connect").disabled = true;
+  document.getElementById("ssid-wait").textContent =selectedSSID
+  document.getElementById("connect").style.display = "none";
+  document.getElementById("connect_manual").style.display = "none";
+  document.getElementById("connect-wait").style.display = "block";
 
   $.ajax({
     url: "/connect.json",
@@ -359,11 +346,11 @@ function checkStatus(url = status.json) {
         //that's a connection attempt
         if (data["urc"] === 0) {
           //got connection
-          document.getElementById("connected-to span").text(data["ssid"]);
-          document.getElementById("connect-details h1").text(data["ssid"]);
-          document.getElementById("ip").text(data["ip"]);
-          document.getElementById("netmask").text(data["netmask"]);
-          document.getElementById("gw").text(data["gw"]);
+          document.getElementById("connected-to span").textContent =data["ssid"]
+          document.getElementById("connect-details h1").textContent =data["ssid"]
+          document.getElementById("ip").textContent =data["ip"]
+          document.getElementById("netmask").textContent =data["netmask"]
+          document.getElementById("gw").textContent =data["gw"]
           document
             .getElementById("wifi-status")
             .slideDown("fast", function () {});
@@ -380,11 +367,11 @@ function checkStatus(url = status.json) {
           link.setAttribute("href", "http://" + data["ip"]);
         } else if (data["urc"] === 1) {
           //failed attempt
-          document.getElementById("connected-to span").text("");
-          document.getElementById("connect-details h1").text("");
-          document.getElementById("ip").text("0.0.0.0");
-          document.getElementById("netmask").text("0.0.0.0");
-          document.getElementById("gw").text("0.0.0.0");
+          document.getElementById("connected-to span").textContent =""
+          document.getElementById("connect-details h1").textContent =""
+          document.getElementById("ip").textContent ="0.0.0.0"
+          document.getElementById("netmask").textContent ="0.0.0.0"
+          document.getElementById("gw").textContent ="0.0.0.0"
 
           //don't show any connection
           document
@@ -402,11 +389,11 @@ function checkStatus(url = status.json) {
       } else if (data.hasOwnProperty("urc") && data["urc"] === 0) {
         //ESP32 is already connected to a wifi without having the user do anything
         if (!document.getElementById("wifi-status").is(":visible")) {
-          document.getElementById("connected-to span").text(data["ssid"]);
-          document.getElementById("connect-details h1").text(data["ssid"]);
-          document.getElementById("ip").text(data["ip"]);
-          document.getElementById("netmask").text(data["netmask"]);
-          document.getElementById("gw").text(data["gw"]);
+          document.getElementById("connected-to span").textContent =data["ssid"]
+          document.getElementById("connect-details h1").textContent =data["ssid"]
+          document.getElementById("ip").textContent =data["ip"]
+          document.getElementById("netmask").textContent =data["netmask"]
+          document.getElementById("gw").textContent =data["gw"]
           document
             .getElementById("wifi-status")
             .slideDown("fast", function () {});
