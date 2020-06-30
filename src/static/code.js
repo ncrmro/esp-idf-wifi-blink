@@ -11,6 +11,16 @@ if (!String.prototype.format) {
   };
 }
 
+function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
 var apList = null;
 var selectedSSID = "";
 var refreshAPInterval = null; 
@@ -39,15 +49,13 @@ function startRefreshAPInterval(){
 	refreshAPInterval = setInterval(refreshAP, 2800);
 }
 
-$(document).ready(function(){
-	
-	
-	$("#wifi-status").on("click", ".ape", function() {
+docReady(function(){
+	document.getElementById("wifi-status").addEventListener("click",function(e){
 		$( "#wifi" ).slideUp( "fast", function() {});
 		$( "#connect-details" ).slideDown( "fast", function() {});
-	});
+    }, false);
 
-	$("#manual_add").on("click", ".ape", function() {
+	document.getElementById("manual_add").addEventListener("click",function(e){
 		selectedSSID = $(this).text();
 		$( "#ssid-pwd" ).text(selectedSSID);
 		$( "#wifi" ).slideUp( "fast", function() {});
@@ -58,84 +66,97 @@ $(document).ready(function(){
 		$( "#loading" ).show();
 		$( "#connect-success" ).hide();
 		$( "#connect-fail" ).hide();
-	});
+    }, false);
 
-	$("#wifi-list").on("click", ".ape", function() {
+	document.getElementById("wifi-list").addEventListener("click",function(e){
 		selectedSSID = $(this).text();
 		$( "#ssid-pwd" ).text(selectedSSID);
 		$( "#wifi" ).slideUp( "fast", function() {});
 		$( "#connect_manual" ).slideUp( "fast", function() {});
 		$( "#connect" ).slideDown( "fast", function() {});
-		
+
 		//update wait screen
 		$( "#loading" ).show();
 		$( "#connect-success" ).hide();
-		$( "#connect-fail" ).hide();		
-	});
-	
-	$("#cancel").on("click", function() {
-		selectedSSID = "";
-		$( "#connect" ).slideUp( "fast", function() {});
-		$( "#connect_manual" ).slideUp( "fast", function() {});
-		$( "#wifi" ).slideDown( "fast", function() {});
+		$( "#connect-fail" ).hide();
+    }, false);
+
+	document.getElementById("#cancel").addEventListener("click",function(e){
+			selectedSSID = "";
+    		$( "#connect" ).slideUp( "fast", function() {});
+    		$( "#connect_manual" ).slideUp( "fast", function() {});
+    		$( "#wifi" ).slideDown( "fast", function() {});
+    }, false);
+
+
+	document.getElementById("#manual_cancel").addEventListener("click",function(e){
+			selectedSSID = "";
+    		$( "#connect" ).slideUp( "fast", function() {});
+    		$( "#connect_manual" ).slideUp( "fast", function() {});
+    		$( "#wifi" ).slideDown( "fast", function() {});
+        }, false);
+
+
+
+	document.getElementById("#join").addEventListener("click",function(e){
+			performConnect();
+
+        }, false);
+
+	$().on("click", function() {
 	});
 
-	$("#manual_cancel").on("click", function() {
-		selectedSSID = "";
-		$( "#connect" ).slideUp( "fast", function() {});
-		$( "#connect_manual" ).slideUp( "fast", function() {});
-		$( "#wifi" ).slideDown( "fast", function() {});
-	});
-	
-	$("#join").on("click", function() {
-		performConnect();
-	});
+	document.getElementById("#manual_join").addEventListener("click",function(e){
+			performConnect($(this).data('connect'));
 
-	$("#manual_join").on("click", function() {
-		performConnect($(this).data('connect'));
-	});
+        }, false);
+
+
+	document.getElementById("#ok-details").addEventListener("click",function(e){
+        $( "#connect-details" ).slideUp( "fast", function() {});
+        		$( "#wifi" ).slideDown( "fast", function() {});
+        }, false);
+
+	document.getElementById("#ok-credits").addEventListener("click",function(e){
+        	$( "#credits" ).slideUp( "fast", function() {});
+    		$( "#app" ).slideDown( "fast", function() {});
+        }, false);
+
+
+	document.getElementById("#acredits").addEventListener("click",function(e){
+			event.preventDefault();
+    		$( "#app" ).slideUp( "fast", function() {});
+    		$( "#credits" ).slideDown( "fast", function() {});
+        }, false);
+
+
+	document.getElementById("#ok-connect").addEventListener("click",function(e){
+			$( "#connect-wait" ).slideUp( "fast", function() {});
+    		$( "#wifi" ).slideDown( "fast", function() {});
+        }, false);
 	
-	$("#ok-details").on("click", function() {
-		$( "#connect-details" ).slideUp( "fast", function() {});
-		$( "#wifi" ).slideDown( "fast", function() {});
-		
-	});
+
+
+	document.getElementById("#disconnect").addEventListener("click",function(e){
+			$( "#connect-details-wrap" ).addClass('blur');
+    		$( "#diag-disconnect" ).slideDown( "fast", function() {});
+        }, false);
 	
-	$("#ok-credits").on("click", function() {
-		$( "#credits" ).slideUp( "fast", function() {});
-		$( "#app" ).slideDown( "fast", function() {});
-		
-	});
+
+	document.getElementById("#no-disconnect").addEventListener("click",function(e){
+	$( "#diag-disconnect" ).slideUp( "fast", function() {});
+    		$( "#connect-details-wrap" ).removeClass('blur');
+        }, false);
 	
-	$("#acredits").on("click", function(event) {
-		event.preventDefault();
-		$( "#app" ).slideUp( "fast", function() {});
-		$( "#credits" ).slideDown( "fast", function() {});
-	});
-	
-	$("#ok-connect").on("click", function() {
-		$( "#connect-wait" ).slideUp( "fast", function() {});
-		$( "#wifi" ).slideDown( "fast", function() {});
-	});
-	
-	$("#disconnect").on("click", function() {
-		$( "#connect-details-wrap" ).addClass('blur');
-		$( "#diag-disconnect" ).slideDown( "fast", function() {});
-	});
-	
-	$("#no-disconnect").on("click", function() {
-		$( "#diag-disconnect" ).slideUp( "fast", function() {});
-		$( "#connect-details-wrap" ).removeClass('blur');
-	});
-	
-	$("#yes-disconnect").on("click", function() {
-		
+
+
+	document.getElementById("#yes-disconnect").addEventListener("click",function(e){
 		stopCheckStatusInterval();
 		selectedSSID = "";
-		
+
 		$( "#diag-disconnect" ).slideUp( "fast", function() {});
 		$( "#connect-details-wrap" ).removeClass('blur');
-		
+
 		$.ajax({
 			url: '/connect.json',
 			dataType: 'json',
@@ -145,26 +166,17 @@ $(document).ready(function(){
 		});
 
 		startCheckStatusInterval();
-		
+
 		$( "#connect-details" ).slideUp( "fast", function() {});
 		$( "#wifi" ).slideDown( "fast", function() {})
-	});
-	
-	
-	
-	
-	
-	
-	
-	
+        }, false);
+
 	//first time the page loads: attempt get the connection status and start the wifi scan
 	refreshAP();
 	startCheckStatusInterval();
 	startRefreshAPInterval();
 
 
-	
-	
 });
 
 
