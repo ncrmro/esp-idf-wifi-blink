@@ -19,7 +19,7 @@ After configuring the wifi `curl -X POST http://LAN_IP_ADDRESS/blink`
 1. Captive portal is opened
 1. Wifi is selected and credentials are added
     1. Wifi now in WIFI_MODE_APSTA with LAN IP, Client make a post request to `status.json`
-    1. User should be redirected to browser from Cap Portal to actual we browser
+    1. After wifi connection success is made we should redirect.
     1. One we get to web app we say `a little more config needed`
     1. Switch to WIFI_MODE_STA, Client 
     1. Client Device should revert back
