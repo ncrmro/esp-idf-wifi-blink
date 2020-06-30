@@ -346,7 +346,7 @@ async function checkStatus(url = "/status.json") {
             break;
         }
       } else if (data.hasOwnProperty("urc") && data["urc"] === 0) {
-        console.log("Connected!");
+        console.info("Connected!");
         //ESP32 is already connected to a wifi without having the user do anything
         if (
           gel("wifi-status").style.display == "" ||
@@ -360,18 +360,13 @@ async function checkStatus(url = "/status.json") {
           gel("netmask").textContent = data["netmask"];
           gel("gw").textContent = data["gw"];
           gel("wifi-status").style.display = "block";
-
-          //           var link = gel("outbound_a_href");
-          //           link.setAttribute("href", "http://" + data["ip"]);
         }
       }
-    } else if (data && data.hasOwnProperty("urc") && data["urc"] === 2) {
-      //that's a manual disconnect
+    } else if (data.hasOwnProperty("urc") && data["urc"] === 2) {
+      console.log('Manual disconnect requested...');
       if (gel("wifi-status").style.display == "block") {
         gel("wifi-status").style.display == "none";
       }
-    } else {
-      console.info("Status returned empty from /status.json!");
     }
   } catch (e) {
     console.info("Was not able to fetch /status.json");
