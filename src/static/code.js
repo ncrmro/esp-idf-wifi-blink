@@ -263,24 +263,20 @@ function rssiToIcon(rssi) {
 }
 
 async function refreshAP(url = "/ap.json") {
-  const response = await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (response.ok) {
-    const data = await response.json();
-
-    if (data.length > 0) {
+  try {
+    var res = await fetch(url);
+    var access_points = await res.json();
+    if (access_points.length > 0) {
       //sort by signal strength
-      data.sort(function (a, b) {
+      access_points.sort((a, b) => {
         var x = a["rssi"];
         var y = b["rssi"];
         return x < y ? 1 : x > y ? -1 : 0;
       });
-      apList = data;
-      refreshAPHTML(apList);
+      refreshAPHTML(access_points);
     }
+  } catch (e) {
+    console.info("Access points returned empty from /ap.json!");
   }
 }
 
@@ -300,15 +296,10 @@ function refreshAPHTML(data) {
 }
 
 async function checkStatus(url = "/status.json") {
-  const response = await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (response.ok) {
-    const data = await response.json();
-    if (data.hasOwnProperty("ssid") && data["ssid"] != "") {
+  try {
+    var response = await fetch(url);
+    var data = await response.json();
+    if (data && data.hasOwnProperty("ssid") && data["ssid"] != "") {
       if (data["ssid"] === selectedSSID) {
         //that's a connection attempt
         if (data["urc"] === 0) {
@@ -330,15 +321,14 @@ async function checkStatus(url = "/status.json") {
           gel("connect-success").style.display = "block";
           gel("connect-fail").style.display = "none";
 
-//           var link = gel("outbound_a_href_on_success");
-//           link.setAttribute("href", "http://" + data["ip"]);
-
+          //           var link = gel("outbound_a_href_on_success");
+          //           link.setAttribute("href", "http://" + data["ip"]);
         } else if (data["urc"] === 1) {
           //failed attempt
           document.querySelector("#connected-to div div div span").textContent =
-                      data["ssid"];
-        document.querySelector("#connect-details h1").textContent =
-          data["ssid"];;
+            data["ssid"];
+          document.querySelector("#connect-details h1").textContent =
+            data["ssid"];
           gel("ip").textContent = "0.0.0.0";
           gel("netmask").textContent = "0.0.0.0";
           gel("gw").textContent = "0.0.0.0";
@@ -351,13 +341,16 @@ async function checkStatus(url = "/status.json") {
 
           //update wait screen
           gel("loading").display = "none";
-          gel("connect-fail").style.display = "block"
+          gel("connect-fail").style.display = "block";
           gel("connect-success").style.display = "none";
         }
       } else if (data.hasOwnProperty("urc") && data["urc"] === 0) {
         console.log("Connected!");
         //ESP32 is already connected to a wifi without having the user do anything
-        if (gel("wifi-status").style.display == "" || gel("wifi-status").style.display == "none") {
+        if (
+          gel("wifi-status").style.display == "" ||
+          gel("wifi-status").style.display == "none"
+        ) {
           document.querySelector("#connected-to div div div span").textContent =
             data["ssid"];
           document.querySelector("#connect-details h1").textContent =
@@ -367,15 +360,19 @@ async function checkStatus(url = "/status.json") {
           gel("gw").textContent = data["gw"];
           gel("wifi-status").style.display = "block";
 
-//           var link = gel("outbound_a_href");
-//           link.setAttribute("href", "http://" + data["ip"]);
+          //           var link = gel("outbound_a_href");
+          //           link.setAttribute("href", "http://" + data["ip"]);
         }
       }
-    } else if (data.hasOwnProperty("urc") && data["urc"] === 2) {
+    } else if (data && data.hasOwnProperty("urc") && data["urc"] === 2) {
       //that's a manual disconnect
       if (gel("wifi-status").style.display == "block") {
         gel("wifi-status").style.display == "none";
       }
+    } else {
+      console.info("Status returned empty from /status.json!");
     }
+  } catch (e) {
+    console.info("Was not able to fetch /status.json");
   }
 }
