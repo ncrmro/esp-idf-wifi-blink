@@ -312,7 +312,7 @@ async function checkStatus(url = "/status.json") {
             gel("ip").textContent = data["ip"];
             gel("netmask").textContent = data["netmask"];
             gel("gw").textContent = data["gw"];
-            gel("wifi-status").style.display = "none";
+            gel("wifi-status").style.display = "block";
 
             //unlock the wait screen if needed
             gel("ok-connect").disabled = false;
