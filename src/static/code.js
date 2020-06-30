@@ -172,8 +172,6 @@ docReady(async function () {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "X-Custom-ssid": selectedSSID,
-        "X-Custom-pwd": pwd,
       },
       body: { timestamp: Date.now() },
     });
