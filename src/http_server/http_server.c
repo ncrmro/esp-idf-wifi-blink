@@ -56,7 +56,7 @@ function to process requests, decode URLs, serve files, etc. etc.
 
 #include "http_server.h"
 #include "../wifi/wifi_manager.h"
-
+#include "../blink.h"
 
 /* @brief tag used for ESP serial console messages */
 static const char TAG[] = "http_server";
@@ -264,6 +264,13 @@ void http_server_netconn_serve(struct netconn *conn) {
 					}
 
 				}
+
+                else if(strstr(line, "POST /blink ")) {
+                  ESP_LOGI(TAG, "http_server_netconn_serve: POST /blink");
+                  blink();
+                  netconn_write(conn, http_ok_json_no_cache_hdr, sizeof(http_ok_json_no_cache_hdr) - 1, NETCONN_NOCOPY); /* 200 ok */
+
+                }
 				else{
 					netconn_write(conn, http_400_hdr, sizeof(http_400_hdr) - 1, NETCONN_NOCOPY);
 				}

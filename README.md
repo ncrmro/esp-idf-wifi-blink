@@ -3,6 +3,14 @@ utilizing [Captive Portals](https://en.wikipedia.org/wiki/Captive_portal). It's
 also built using espressif's [esp-idf](https://github.com/espressif/esp-idf) rather
 than Arduino. [Platformio](https://platformio.org/) is utilized primarily as a build system. 
 
+Main gist is can connect to the built in wifi network, this will bring up the portal to configure wifi.
+ 
+At this point you can  do `curl -X POST http://10.10.0.1/blink`, this will turn on the built in LED.
+
+After configuring the wifi `curl -X POST http://LAN_IP_ADDRESS/blink`
+
+
+
 
 1. Board is powered on.
 1. try start in WIFI_MODE_STA with existing credentials
