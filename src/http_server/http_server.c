@@ -79,6 +79,8 @@ extern const uint8_t code_js_start[] asm("_binary_src_static_code_js_start");
 extern const uint8_t code_js_end[] asm("_binary_src_static_code_js_end");
 extern const uint8_t index_html_start[] asm("_binary_src_static_index_html_start");
 extern const uint8_t index_html_end[] asm("_binary_src_static_index_html_end");
+extern const uint8_t success_html_start[] asm("_binary_src_static_success_html_start");
+extern const uint8_t success_html_end[] asm("_binary_src_static_success_html_end");
 
 
 /* const http headers stored in ROM */
@@ -270,6 +272,22 @@ void http_server_netconn_serve(struct netconn *conn) {
                   blink();
                   netconn_write(conn, http_ok_json_no_cache_hdr, sizeof(http_ok_json_no_cache_hdr) - 1, NETCONN_NOCOPY); /* 200 ok */
 
+                }
+                // Apple Captive Network Assistant
+                else if (strstr(line, "GET /hotspot-detect.html ")) {
+                  ESP_LOGI(TAG, "http_server_netconn_serve: GET /hotspot-detect.html");
+                  ESP_LOGI(TAG, "http_server_netconn_serve: STA IP String is: %s", wifi_manager_get_sta_ip_string());
+                  bool not_connected;
+                   not_connected = strcmp(wifi_manager_get_sta_ip_string(), "0.0.0.0");
+
+                  if(not_connected){
+                    netconn_write(conn, http_html_hdr, sizeof(http_html_hdr) - 1, NETCONN_NOCOPY);
+                    netconn_write(conn, success_html_start, success_html_end - success_html_start, NETCONN_NOCOPY);
+                    wifi_manager_unlock_json_buffer();
+                  }
+                  else{
+                    netconn_write(conn, http_503_hdr, sizeof(http_503_hdr) - 1, NETCONN_NOCOPY);
+                  }
                 }
 				else{
 					netconn_write(conn, http_400_hdr, sizeof(http_400_hdr) - 1, NETCONN_NOCOPY);
