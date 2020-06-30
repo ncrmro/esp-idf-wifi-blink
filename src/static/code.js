@@ -113,8 +113,6 @@ docReady(function () {
     false
   );
 
-  $().on("click", function () {});
-
   document.getElementById("manual_join").addEventListener(
     "click",
     function (e) {
