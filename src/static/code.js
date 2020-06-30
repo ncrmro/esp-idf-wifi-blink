@@ -266,13 +266,10 @@ async function refreshAP(url = "/ap.json") {
 function refreshAPHTML(data) {
   var h = "";
   data.forEach(function (e, idx, array) {
-    h += '<div class="ape{0}"><div class="{1}"><div class="{2}">{3}</div></div></div>'.format(
-      idx === array.length - 1 ? "" : " brdb",
-      rssiToIcon(e.rssi),
-      e.auth == 0 ? "" : "pw",
-      e.ssid
-    );
-    h += "\n";
+    let ap_class = idx === array.length - 1 ? "" : " brdb";
+    let rssicon = rssiToIcon(e.rssi);
+    let auth = e.auth == 0 ? "" : "pw";
+    h += `<div class="ape${ap_class}"><div class="${rssicon}"><div class="${auth}">${e.ssid}</div></div></div>\n`;
   });
 
   gel("wifi-list").innerHTML = h;
