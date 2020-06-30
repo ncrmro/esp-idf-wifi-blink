@@ -85,9 +85,8 @@ docReady(async function () {
 
   gel("wifi-list").addEventListener(
     "click",
-    function (e) {
+    (e) => {
       selectedSSID = e.target.innerText;
-      console.log("selected", selectedSSID);
       gel("ssid-pwd").textContent = selectedSSID;
       gel("connect").style.display = "block";
       gel("wifi").style.display = "none";
@@ -301,48 +300,50 @@ async function checkStatus(url = "/status.json") {
     var data = await response.json();
     if (data && data.hasOwnProperty("ssid") && data["ssid"] != "") {
       if (data["ssid"] === selectedSSID) {
-        //that's a connection attempt
-        if (data["urc"] === 0) {
-          //got connection
-          document.querySelector("#connected-to div div div span").textContent =
-            data["ssid"];
-          document.querySelector("#connect-details h1").textContent =
-            data["ssid"];
-          gel("ip").textContent = data["ip"];
-          gel("netmask").textContent = data["netmask"];
-          gel("gw").textContent = data["gw"];
-          gel("wifi-status").style.display = "none";
+        console.info("Attempting connection...");
+        switch (data["urc"]) {
+          case 0:
+            console.info("Got connection!");
+            document.querySelector(
+              "#connected-to div div div span"
+            ).textContent = data["ssid"];
+            document.querySelector("#connect-details h1").textContent =
+              data["ssid"];
+            gel("ip").textContent = data["ip"];
+            gel("netmask").textContent = data["netmask"];
+            gel("gw").textContent = data["gw"];
+            gel("wifi-status").style.display = "none";
 
-          //unlock the wait screen if needed
-          gel("ok-connect").disabled = false;
+            //unlock the wait screen if needed
+            gel("ok-connect").disabled = false;
 
-          //update wait screen
-          gel("loading").style.display = "none";
-          gel("connect-success").style.display = "block";
-          gel("connect-fail").style.display = "none";
+            //update wait screen
+            gel("loading").style.display = "none";
+            gel("connect-success").style.display = "block";
+            gel("connect-fail").style.display = "none";
+            break;
+          case 1:
+            console.info("Connection attempt failed!");
+            document.querySelector(
+              "#connected-to div div div span"
+            ).textContent = data["ssid"];
+            document.querySelector("#connect-details h1").textContent =
+              data["ssid"];
+            gel("ip").textContent = "0.0.0.0";
+            gel("netmask").textContent = "0.0.0.0";
+            gel("gw").textContent = "0.0.0.0";
 
-          //           var link = gel("outbound_a_href_on_success");
-          //           link.setAttribute("href", "http://" + data["ip"]);
-        } else if (data["urc"] === 1) {
-          //failed attempt
-          document.querySelector("#connected-to div div div span").textContent =
-            data["ssid"];
-          document.querySelector("#connect-details h1").textContent =
-            data["ssid"];
-          gel("ip").textContent = "0.0.0.0";
-          gel("netmask").textContent = "0.0.0.0";
-          gel("gw").textContent = "0.0.0.0";
+            //don't show any connection
+            gel("wifi-status").display = "none";
 
-          //don't show any connection
-          gel("wifi-status").display = "none";
+            //unlock the wait screen
+            gel("ok-connect").disabled = false;
 
-          //unlock the wait screen
-          gel("ok-connect").disabled = false;
-
-          //update wait screen
-          gel("loading").display = "none";
-          gel("connect-fail").style.display = "block";
-          gel("connect-success").style.display = "none";
+            //update wait screen
+            gel("loading").display = "none";
+            gel("connect-fail").style.display = "block";
+            gel("connect-success").style.display = "none";
+            break;
         }
       } else if (data.hasOwnProperty("urc") && data["urc"] === 0) {
         console.log("Connected!");
