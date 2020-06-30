@@ -7,16 +7,6 @@ const connect_manual = gel("connect_manual");
 const connect_wait = gel("connect-wait");
 const connect_details = gel("connect-details");
 
-// First, checks if it isn't implemented yet.
-if (!String.prototype.format) {
-  String.prototype.format = function () {
-    var args = arguments;
-    return this.replace(/{(\d+)}/g, function (match, number) {
-      return typeof args[number] != "undefined" ? args[number] : match;
-    });
-  };
-}
-
 function docReady(fn) {
   // see if DOM is already available
   if (
@@ -60,7 +50,7 @@ function startRefreshAPInterval() {
 docReady(async function () {
   gel("wifi-status").addEventListener(
     "click",
-    function (e) {
+    (e) => {
       gel("wifi").style.display = "none";
       document.getElementById("connect-details").style.display = "block";
     },
@@ -69,7 +59,7 @@ docReady(async function () {
 
   gel("manual_add").addEventListener(
     "click",
-    function (e) {
+    (e) => {
       selectedSSID = e.target.innerText;
 
       gel("ssid-pwd").textContent = selectedSSID;
@@ -106,17 +96,11 @@ docReady(async function () {
 
   gel("manual_cancel").addEventListener("click", cancel, false);
 
-  gel("join").addEventListener(
-    "click",
-    function (e) {
-      performConnect();
-    },
-    false
-  );
+  gel("join").addEventListener("click", performConnect, false);
 
   gel("manual_join").addEventListener(
     "click",
-    function (e) {
+    (e) => {
       performConnect($(this).data("connect"));
     },
     false
@@ -124,7 +108,7 @@ docReady(async function () {
 
   gel("ok-details").addEventListener(
     "click",
-    function (e) {
+    (e) => {
       gel("connect-details").style.display = "none";
       gel("wifi").style.display = "block";
     },
@@ -133,7 +117,7 @@ docReady(async function () {
 
   gel("ok-credits").addEventListener(
     "click",
-    function (e) {
+    (e) => {
       gel("credits").style.display = "none";
       gel("app").style.display = "block";
     },
@@ -142,7 +126,7 @@ docReady(async function () {
 
   gel("acredits").addEventListener(
     "click",
-    function (e) {
+    (e) => {
       event.preventDefault();
       gel("app").style.display = "none";
       gel("credits").style.display = "block";
@@ -152,7 +136,7 @@ docReady(async function () {
 
   gel("ok-connect").addEventListener(
     "click",
-    function (e) {
+    (e) => {
       gel("connect-wait").style.display = "none";
       gel("wifi").style.display = "block";
     },
@@ -161,7 +145,7 @@ docReady(async function () {
 
   gel("disconnect").addEventListener(
     "click",
-    function (e) {
+    (e) => {
       gel("connect-details-wrap").addClass("blur");
       gel("diag-disconnect").style.display = "block";
     },
@@ -170,7 +154,7 @@ docReady(async function () {
 
   gel("no-disconnect").addEventListener(
     "click",
-    function (e) {
+    (e) => {
       gel("diag-disconnect").style.display = "none";
       gel("connect-details-wrap").removeClass("blur");
     },
@@ -363,7 +347,7 @@ async function checkStatus(url = "/status.json") {
         }
       }
     } else if (data.hasOwnProperty("urc") && data["urc"] === 2) {
-      console.log('Manual disconnect requested...');
+      console.log("Manual disconnect requested...");
       if (gel("wifi-status").style.display == "block") {
         gel("wifi-status").style.display == "none";
       }
