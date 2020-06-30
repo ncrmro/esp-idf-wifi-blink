@@ -300,7 +300,7 @@ async function checkStatus(url = "/status.json") {
     var data = await response.json();
     if (data && data.hasOwnProperty("ssid") && data["ssid"] != "") {
       if (data["ssid"] === selectedSSID) {
-        console.info("Attempting connection...");
+        // Attempting connection
         switch (data["urc"]) {
           case 0:
             console.info("Got connection!");
@@ -346,7 +346,7 @@ async function checkStatus(url = "/status.json") {
             break;
         }
       } else if (data.hasOwnProperty("urc") && data["urc"] === 0) {
-        console.info("Connected!");
+        console.info("Connection established");
         //ESP32 is already connected to a wifi without having the user do anything
         if (
           gel("wifi-status").style.display == "" ||
