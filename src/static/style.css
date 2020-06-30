@@ -13,7 +13,7 @@ a:hover {
     color: red;
 }
 input {
-    visiblity: none;
+    display: none;
     font: 1.1em tahoma, arial, sans-serif;
 }
 input:focus,
@@ -32,7 +32,7 @@ p {
     padding: 10px;
 }
 #credits {
-    visiblity: none;
+    display: none;
 }
 #app {} #app-wrap {} #disconnect {
     width: 150px;
@@ -45,7 +45,7 @@ p {
     right: 0;
     height: 100%;
     width: 100%;
-    visiblity: none;
+    display: none;
 }
 .diag-box-win {
     position: absolute;
@@ -110,13 +110,13 @@ h3 {
     color: red;
 }
 #wifi-status {
-    visiblity: none;
+    display: none;
 }
 #connect {
-    visiblity: none;
+    display: none;
 }
 #connect_manual {
-    visiblity: none;
+    display: none;
 }
 #manual_ssid {
     border: none;
@@ -162,16 +162,16 @@ h3 {
     text-align: center;
 }
 #connect-wait {
-    visiblity: none;
+    display: none;
 }
 #connect-success {
-    visiblity: none;
+    display: none;
 }
 #connect-fail {
-    visiblity: none;
+    display: none;
 }
 #connect-details {
-    visiblity: none;
+    display: none;
 }
 .fr {
     float: right;
