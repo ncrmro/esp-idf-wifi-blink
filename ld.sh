@@ -1,5 +1,9 @@
-rm -rf .pio/build/*
+#rm -rf .pio/build/*
+PORT=/dev/cu.SLAB_USBtoUART
+BAUD=115200
 
-pio run --target upload --upload-port /dev/cu.SLAB_USBtoUART
+esptool.py -p $PORT --baud $BAUD erase_flash
 
-python -m serial.tools.miniterm  /dev/cu.SLAB_USBtoUART 115200
+pio run --target upload --upload-port $PORT || exit 1
+
+python -m serial.tools.miniterm $PORT $BAUD
